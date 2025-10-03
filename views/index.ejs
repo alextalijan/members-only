@@ -9,6 +9,8 @@
     <% if (!user) { %>
       <a href="/login">Log In</a>
       <a href="/register">Register</a>
+    <% } else { %>
+      <a href="/logout">Log Out</a>
     <% } %>
     <h1>Messages</h1>
     <% if (user) { %>
