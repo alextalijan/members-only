@@ -10,19 +10,19 @@
     <%- include('partials/errors', { errors }) %>
     <form action="/register" method="POST">
       <label for="firstName">First Name:</label>
-      <input type="text" name="firstName" id="firstName" value="<%= locals.inputs.firstName %>" />
+      <input type="text" name="firstName" id="firstName" value="<%= (locals.inputs && locals.inputs.firstName) || '' %>" />
       <label for="lastName">Last Name:</label>
-      <input type="text" name="lastName" id="lastName" value="<%= locals.inputs.lastName %>" />
+      <input type="text" name="lastName" id="lastName" value="<%= (locals.inputs && locals.inputs.lastName) || '' %>" />
       <label for="username">Username:</label>
-      <input type="text" name="username" id="username" value="<%= locals.inputs.username %>" />
+      <input type="text" name="username" id="username" value="<%= (locals.inputs && locals.inputs.username) || '' %>" />
       <label for="password">Password:</label>
-      <input type="password" name="password" id="password" value="<%= locals.inputs.password %>" />
+      <input type="password" name="password" id="password" value="<%= (locals.inputs && locals.inputs.password) || '' %>" />
       <label for="passwordConfirmation">Confirm Password:</label>
       <input
         type="password"
         name="passwordConfirmation"
         id="passwordConfirmation"
-        value="<%= locals.inputs.passwordConfirmation %>"
+        value="<%= (locals.inputs && locals.inputs.passwordConfirmation) || '' %>"
       />
       <button type="submit">Register</button>
     </form>
