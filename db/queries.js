@@ -12,4 +12,15 @@ module.exports = {
       console.error(err);
     }
   },
+  getUserByUsername: async (username) => {
+    try {
+      const { rows } = await pool.query(
+        'SELECT * FROM users WHERE username = $1',
+        [username]
+      );
+      return rows;
+    } catch (err) {
+      console.error(err);
+    }
+  },
 };

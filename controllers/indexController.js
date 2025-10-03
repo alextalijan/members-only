@@ -71,6 +71,16 @@ module.exports = {
         return res.render('register', { errors: errors.array() });
       }
 
+      // Make sure the username doesn't already exist
+      const [user] = await db.getUserByUsername(
+        req.body.username.trim().toLowerCase()
+      );
+      if (user) {
+        return next(
+          new Error('This username already exists. Please choose another one.')
+        );
+      }
+
       // Capture and clean user input
       const firstName = req.body.firstName.trim();
       const lastName = req.body.lastName.trim();
@@ -78,7 +88,7 @@ module.exports = {
 
       let password;
       try {
-        password = await bcrypt.hash(req.body.password, 10);
+        password = await bcrypt.hash(req.body.password.trim(), 10);
       } catch (err) {
         return next(new Error('Error hashing the password. Please try again.'));
       }
