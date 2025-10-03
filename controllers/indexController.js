@@ -2,6 +2,7 @@ const { body, validationResult } = require('express-validator');
 const bcrypt = require('bcryptjs');
 const db = require('../db/queries.js');
 const passport = require('passport');
+require('dotenv').config();
 
 const registerValidations = [
   body('firstName')
@@ -169,5 +170,24 @@ module.exports = {
       }
       res.redirect('/');
     });
+  },
+  joinClubGet: async (req, res, next) => {
+    res.render('joinClubForm', { errors: null });
+  },
+  joinClubPost: async (req, res) => {
+    if (req.body.password !== process.env.CLUB_PASSWORD) {
+      return res.render('joinClubForm', {
+        errors: [new Error('Secret password is incorrect.')],
+      });
+    }
+
+    // Turn the user into a member
+    try {
+      await db.makeUserMember(req.user.id);
+    } catch (err) {
+      return next(err);
+    }
+
+    res.redirect('/');
   },
 };

@@ -19,6 +19,8 @@ router.post('/login', controller.loginPost);
 router.get('/', controller.indexGet);
 router.get('/newmessage', isAuthenticated, controller.newMessageGet);
 router.post('/newmessage', isAuthenticated, controller.newMessagePost);
-router.get('/logout', controller.logoutGet);
+router.get('/logout', isAuthenticated, controller.logoutGet);
+router.get('/joinclub', isAuthenticated, controller.joinClubGet);
+router.post('/joinclub', isAuthenticated, controller.joinClubPost);
 
 module.exports = router;

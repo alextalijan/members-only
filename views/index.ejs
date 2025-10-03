@@ -10,18 +10,20 @@
     <% if (locals.user) { %>
       <a href="/newmessage">Create a new message</a>
     <% } %>
+    <% if (user && !user.member) { %>
+      <a href="/joinclub">Join the club</a>
+    <% } %>
     <div class="messages">
       <% messages.forEach(message => { %>
           <div class="message-card">
             <h2><%= message.title %></h2>
             <p><%= message.text %></p>
-            <span>Author: 
-              <% if (user && user.member) { %>
-                  <%= message.username %>
-              <% } else { %>
-                  Hidden for non-members
-              <% } %>
-            <span>Time: <%= message.timestamp %></span>
+            <% if (user && user.member) { %>
+                <span>Author: <%= message.username %></span>
+                <span>Time: <%= message.timestamp %></span>
+            <% } else { %>
+                <span>Author and time hidden for non-members</span>
+            <% } %>
           </div>
       <% }) %>
     </div>
