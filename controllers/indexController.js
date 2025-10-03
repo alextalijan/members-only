@@ -1,6 +1,7 @@
 const { body, validationResult } = require('express-validator');
 const bcrypt = require('bcryptjs');
 const db = require('../db/queries.js');
+const passport = require('passport');
 
 const registerValidations = [
   body('firstName')
@@ -99,4 +100,7 @@ module.exports = {
       res.redirect('/login');
     },
   ],
+  loginGet: (req, res) => {
+    res.render('login', { errors: null });
+  },
 };
