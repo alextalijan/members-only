@@ -1,4 +1,6 @@
 const { body, validationResult } = require('express-validator');
+const bcrypt = require('bcryptjs');
+const db = require('../db/queries.js');
 
 const registerValidations = [
   body('firstName')
@@ -39,11 +41,45 @@ const registerValidations = [
       return true;
     })
     .withMessage('Password cannot contain any spaces.'),
+  body('passwordConfirmation')
+    .custom((value, { req }) => {
+      if (value !== req.body.password) {
+        return false;
+      }
+
+      return true;
+    })
+    .withMessage('Password and confirmation do not match.'),
 ];
 
 module.exports = {
   registerGet: (req, res) => {
-    res.render('register');
+    res.render('register', { errors: null });
   },
-  registerPost: (req, res) => {},
+  registerPost: [
+    registerValidations,
+    async (req, res, next) => {
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        res.render('register', { errors: errors.array() });
+      }
+
+      // Capture and clean user input
+      const firstName = req.body.firstName.trim();
+      const lastName = req.body.lastName.trim();
+      const username = req.body.username.trim().toLowerCase();
+
+      let password;
+      try {
+        password = await bcrypt.hash(req.body.password, 10);
+      } catch (err) {
+        return next(new Error('Error hashing the password. Please try again.'));
+      }
+
+      // Insert the user into the database
+      await db.addUser(firstName, lastName, username, password);
+
+      res.redirect('/login');
+    },
+  ],
 };
