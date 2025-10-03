@@ -190,4 +190,33 @@ module.exports = {
 
     res.redirect('/');
   },
+  adminGet: (req, res) => {
+    res.render('admin', { errors: null });
+  },
+  adminPost: async (req, res, next) => {
+    if (req.body.password !== process.env.ADMIN_PASSWORD) {
+      return res.render('admin', {
+        errors: [new Error('Admin password is incorrect.')],
+      });
+    }
+
+    // Turn the user into an admin
+    try {
+      await db.makeUserAdmin(req.user.id);
+    } catch (err) {
+      return next(err);
+    }
+
+    res.redirect('/');
+  },
+  deleteMessage: async (req, res, next) => {
+    const messageId = req.params.messageId;
+    try {
+      await db.deleteMessage(messageId);
+    } catch (err) {
+      return next(err);
+    }
+
+    res.redirect('/');
+  },
 };

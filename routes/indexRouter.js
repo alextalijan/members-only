@@ -22,5 +22,12 @@ router.post('/newmessage', isAuthenticated, controller.newMessagePost);
 router.get('/logout', isAuthenticated, controller.logoutGet);
 router.get('/joinclub', isAuthenticated, controller.joinClubGet);
 router.post('/joinclub', isAuthenticated, controller.joinClubPost);
+router.get('/admin', isAuthenticated, controller.adminGet);
+router.post('/admin', isAuthenticated, controller.adminPost);
+router.get(
+  '/deletemessage/:messageId',
+  isAuthenticated,
+  controller.deleteMessage
+);
 
 module.exports = router;
