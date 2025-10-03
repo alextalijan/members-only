@@ -14,5 +14,7 @@ router.post(
     failureRedirect: '/login',
   })
 );
+router.get('/', controller.indexGet);
+router.get('/newmessage', controller.newMessageGet);
 
 module.exports = router;

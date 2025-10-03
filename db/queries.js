@@ -21,4 +21,11 @@ module.exports = {
     ]);
     return rows;
   },
+  getAllMessages: async () => {
+    const { rows } = await pool.query(
+      `SELECT username, title, text, timestamp
+        FROM users JOIN messages ON users.id = messages.user_id`
+    );
+    return rows;
+  },
 };
