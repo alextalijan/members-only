@@ -29,7 +29,7 @@ const registerValidations = [
     .withMessage('Username cannot contain any spaces.'),
   body('password')
     .trim()
-    .isEmpty()
+    .notEmpty()
     .withMessage('Password field cannot be empty.')
     .isLength({ max: 50 })
     .withMessage('Password cannot exceed 50 characters.')
@@ -61,7 +61,7 @@ module.exports = {
     async (req, res, next) => {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
-        res.render('register', { errors: errors.array() });
+        return res.render('register', { errors: errors.array() });
       }
 
       // Capture and clean user input
