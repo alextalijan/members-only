@@ -81,6 +81,12 @@ passport.deserializeUser(async (id, done) => {
   }
 });
 
+// Set the user automatically to locals when it exists
+app.use((req, res, next) => {
+  res.locals.user = req.user;
+  next();
+});
+
 app.use(indexRouter);
 app.use((err, req, res, next) => {
   res.status(500).render('error', { error: err });

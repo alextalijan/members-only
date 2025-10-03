@@ -7,7 +7,9 @@
   </head>
   <body>
     <h1>Messages</h1>
-    <a href="/newmessage">Create a new message</a>
+    <% if (locals.user) { %>
+      <a href="/newmessage">Create a new message</a>
+    <% } %>
     <div class="messages">
       <% messages.forEach(message => { %>
           <div class="message-card">
