@@ -61,6 +61,13 @@ module.exports = {
     async (req, res, next) => {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
+        res.locals.inputs = {
+          firstName: req.body.firstName,
+          lastName: req.body.lastName,
+          username: req.body.username,
+          password: req.body.password,
+          passwordConfirmation: req.body.passwordConfirmation,
+        };
         return res.render('register', { errors: errors.array() });
       }
 
