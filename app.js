@@ -5,6 +5,8 @@ const session = require('express-session');
 const localStrategy = require('passport-local').Strategy;
 const db = require('./db/queries');
 const bcrypt = require('bcryptjs');
+const pool = require('./db/pool');
+const pgSession = require('connect-pg-simple')(expressSession);
 require('dotenv').config();
 
 const indexRouter = require('./routes/indexRouter');
@@ -25,6 +27,10 @@ app.use(
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
+    store: new pgSession({
+      pool: pool,
+      tableName: 'sessions',
+    }),
     cookie: {
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days in miliseconds
       secure: true, // Ensures cookies only go over HTTPS
