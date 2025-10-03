@@ -28,7 +28,7 @@
               <a href="/deletemessage/<%= message.id %>">DELETE</a>
             <% } %>
             <p><%= message.text %></p>
-            <% if (user && user.member) { %>
+            <% if (user && (user.member || user.admin)) { %>
                 <span>Author: <%= message.username %></span>
                 <span>Time: <%= message.timestamp %></span>
             <% } else { %>
