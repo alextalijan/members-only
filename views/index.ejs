@@ -11,6 +11,7 @@
       <a href="/register">Register</a>
     <% } else { %>
       <a href="/logout">Log Out</a>
+      <p>Hi, <%= user.username %>!</p>
     <% } %>
     <h1>Messages</h1>
     <% if (user) { %>
@@ -23,6 +24,9 @@
       <% messages.forEach(message => { %>
           <div class="message-card">
             <h2><%= message.title %></h2>
+            <% if (user && user.admin) { %>
+              <a href="/deletemessage/<%= message.id %>">DELETE</a>
+            <% } %>
             <p><%= message.text %></p>
             <% if (user && user.member) { %>
                 <span>Author: <%= message.username %></span>
