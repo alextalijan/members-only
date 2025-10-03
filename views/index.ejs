@@ -15,7 +15,12 @@
           <div class="message-card">
             <h2><%= message.title %></h2>
             <p><%= message.text %></p>
-            <span>Author: <%= message.username %></span>
+            <span>Author: 
+              <% if (user && user.member) { %>
+                  <%= message.username %>
+              <% } else { %>
+                  Hidden for non-members
+              <% } %>
             <span>Time: <%= message.timestamp %></span>
           </div>
       <% }) %>

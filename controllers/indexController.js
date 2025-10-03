@@ -138,7 +138,7 @@ module.exports = {
   },
   newMessagePost: [
     newMessageValidations,
-    async (req, res) => {
+    async (req, res, next) => {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
         res.locals.inputs = {
@@ -147,6 +147,19 @@ module.exports = {
         };
         res.render('newMessageForm', { errors: errors.array() });
       }
+
+      // Add message into the database
+      try {
+        await db.addMessage(
+          req.user.id,
+          req.body.title.trim(),
+          req.body.message.trim()
+        );
+      } catch (err) {
+        return next(err);
+      }
+
+      res.redirect('/');
     },
   ],
   logoutGet: (req, res) => {

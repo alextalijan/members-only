@@ -16,9 +16,10 @@ module.exports = {
     return rows;
   },
   getUserById: async (id) => {
-    const { rows } = await pool.query('SELECT * FROM users WHERE id = $1', [
-      id,
-    ]);
+    const { rows } = await pool.query(
+      'SELECT id, username, membership_status AS member FROM users WHERE id = $1',
+      [id]
+    );
     return rows;
   },
   getAllMessages: async () => {
@@ -27,5 +28,12 @@ module.exports = {
         FROM users JOIN messages ON users.id = messages.user_id`
     );
     return rows;
+  },
+  addMessage: async (userId, title, text) => {
+    await pool.query(
+      `INSERT INTO messages(user_id, title, text)
+      VALUES ($1, $2, $3)`,
+      [userId, title, text]
+    );
   },
 };
