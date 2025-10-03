@@ -6,8 +6,12 @@
     <title>Home</title>
   </head>
   <body>
+    <% if (!user) { %>
+      <a href="/login">Log In</a>
+      <a href="/register">Register</a>
+    <% } %>
     <h1>Messages</h1>
-    <% if (locals.user) { %>
+    <% if (user) { %>
       <a href="/newmessage">Create a new message</a>
     <% } %>
     <% if (user && !user.member) { %>
