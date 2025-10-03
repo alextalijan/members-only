@@ -53,6 +53,21 @@ const registerValidations = [
     .withMessage('Password and confirmation do not match.'),
 ];
 
+const newMessageValidations = [
+  body('title')
+    .trim()
+    .notEmpty()
+    .withMessage('Title must be provided.')
+    .isLength({ max: 50 })
+    .withMessage('Title cannot exceed 50 characters.'),
+  body('message')
+    .trim()
+    .notEmpty()
+    .withMessage('Message cannot be empty.')
+    .isLength({ max: 200 })
+    .withMessage('Message cannot exceed 200 characters.'),
+];
+
 module.exports = {
   registerGet: (req, res) => {
     res.render('register', { errors: null });
@@ -102,5 +117,44 @@ module.exports = {
   ],
   loginGet: (req, res) => {
     res.render('login', { errors: null });
+  },
+  loginPost: (req, res, next) => {
+    passport.authenticate('local', {
+      successRedirect: '/',
+      failureRedirect: '/login',
+    })(req, res, next);
+  },
+  indexGet: async (req, res, next) => {
+    let messages;
+    try {
+      messages = await db.getAllMessages();
+    } catch (err) {
+      next(err);
+    }
+    res.render('index', { messages });
+  },
+  newMessageGet: async (req, res, next) => {
+    res.render('newMessageForm', { errors: null });
+  },
+  newMessagePost: [
+    newMessageValidations,
+    async (req, res) => {
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        res.locals.inputs = {
+          title: req.body.title,
+          message: req.body.message,
+        };
+        res.render('newMessageForm', { errors: errors.array() });
+      }
+    },
+  ],
+  logoutGet: (req, res) => {
+    req.logout((err) => {
+      if (err) {
+        return next(err);
+      }
+      res.redirect('/');
+    });
   },
 };

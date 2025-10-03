@@ -33,7 +33,7 @@ app.use(
     }),
     cookie: {
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days in miliseconds
-      secure: true, // Ensures cookies only go over HTTPS
+      secure: process.env.MODE === 'dev' ? false : true, // Ensures cookies only go over HTTPS
       httpOnly: true, // Prevents JavaScript from reading cookies
       sameSite: 'lax', // Helps protect against CSRF
     },
